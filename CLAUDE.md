@@ -23,6 +23,10 @@ No hay test runner configurado todavía.
 
 Ver el bloque al inicio de `AGENTS.md`: esta instalación de Next.js (16.3.4) puede tener APIs y convenciones distintas a las que conoces por entrenamiento. Antes de escribir código que toque rutas, layouts, data fetching o config, revisa la guía correspondiente en `node_modules/next/dist/docs/` (carpetas `01-app`, `02-pages`, `03-architecture`, `04-community`). Presta atención a avisos de deprecación.
 
+## Skills
+Usa siempre /frontend-design para diseñar interfaces de usuario
+
+
 ## Architecture
 
 - **App Router** (`app/`): `layout.tsx` es el root layout (fuentes Geist vía `next/font/google`, define `<html>`/`<body>`); `page.tsx` es la ruta `/`. Todavía no hay subrutas ni componentes compartidos — al añadir features, seguir la convención de carpetas del App Router (`app/<ruta>/page.tsx`, `layout.tsx`, etc.) documentada en `node_modules/next/dist/docs/01-app/`.
