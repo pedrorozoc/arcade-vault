@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
-import { getUser, setUser as persistUser, subscribeUser } from "@/lib/scores";
+import { getUser, setUser as persistUser, subscribe } from "@/lib/scores";
 
 type NavSection = "biblioteca" | "salon" | "auth";
 
@@ -11,7 +11,7 @@ export default function Nav() {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const user = useSyncExternalStore(subscribeUser, getUser, () => null);
+  const user = useSyncExternalStore(subscribe, getUser, () => null);
 
   const isActive = (section: NavSection) => {
     if (section === "biblioteca") return pathname === "/" || pathname.startsWith("/juego");

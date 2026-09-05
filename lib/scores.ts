@@ -9,12 +9,19 @@ export interface AvUser {
   name: string;
 }
 
+// Notifica cambios de sesión/puntuaciones a quienes lean estos datos con
+// useSyncExternalStore (la única forma segura de sincronizar localStorage
+// con el render sin disparar la regla react-hooks/set-state-in-effect).
 type Listener = () => void;
-const userListeners = new Set<Listener>();
+const listeners = new Set<Listener>();
 
-export function subscribeUser(listener: Listener): () => void {
-  userListeners.add(listener);
-  return () => userListeners.delete(listener);
+function notify(): void {
+  listeners.forEach((listener) => listener());
+}
+
+export function subscribe(listener: Listener): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }
 
 export interface ScoreEntry {
@@ -24,15 +31,24 @@ export interface ScoreEntry {
   at: number; // Date.now()
 }
 
+// Cachea el objeto parseado por el string crudo de localStorage: getUser()
+// se usa como getSnapshot de useSyncExternalStore, que exige una referencia
+// estable entre llamadas mientras el valor subyacente no cambie (si no,
+// dispara un bucle de renders).
+let userCache: { raw: string | null; user: AvUser | null } = { raw: null, user: null };
+
 export function getUser(): AvUser | null {
   if (typeof window === "undefined") return null;
+  const raw = window.localStorage.getItem(USER_KEY);
+  if (raw === userCache.raw) return userCache.user;
+  let user: AvUser | null = null;
   try {
-    const raw = window.localStorage.getItem(USER_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as AvUser;
+    user = raw ? (JSON.parse(raw) as AvUser) : null;
   } catch {
-    return null;
+    user = null;
   }
+  userCache = { raw, user };
+  return user;
 }
 
 export function setUser(user: AvUser | null): void {
@@ -42,7 +58,7 @@ export function setUser(user: AvUser | null): void {
   } else {
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
-  userListeners.forEach((listener) => listener());
+  notify();
 }
 
 export function getScores(): ScoreEntry[] {
@@ -61,6 +77,7 @@ export function saveScore(entry: Omit<ScoreEntry, "at">): void {
   const scores = getScores();
   scores.push({ ...entry, at: Date.now() });
   window.localStorage.setItem(SCORES_KEY, JSON.stringify(scores));
+  notify();
 }
 
 export function getBestScoreFor(gameId: string): ScoreEntry | null {
