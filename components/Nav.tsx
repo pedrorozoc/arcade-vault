@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import { getUser, setUser as persistUser, subscribe } from "@/lib/scores";
 
-type NavSection = "biblioteca" | "salon" | "auth";
+type NavSection = "inicio" | "biblioteca" | "salon" | "auth";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -14,7 +14,8 @@ export default function Nav() {
   const user = useSyncExternalStore(subscribe, getUser, () => null);
 
   const isActive = (section: NavSection) => {
-    if (section === "biblioteca") return pathname === "/" || pathname.startsWith("/juego");
+    if (section === "inicio") return pathname === "/";
+    if (section === "biblioteca") return pathname === "/juego" || pathname.startsWith("/juego/");
     if (section === "salon") return pathname === "/salon";
     return pathname === "/auth";
   };
@@ -37,7 +38,10 @@ export default function Nav() {
           </div>
         </Link>
         <div className="links">
-          <Link href="/" className={isActive("biblioteca") ? "active" : ""}>
+          <Link href="/" className={isActive("inicio") ? "active" : ""}>
+            Inicio
+          </Link>
+          <Link href="/juego" className={isActive("biblioteca") ? "active" : ""}>
             Biblioteca
           </Link>
           <Link href="/salon" className={isActive("salon") ? "active" : ""}>
@@ -68,7 +72,10 @@ export default function Nav() {
         <div className="pixel neon-cyan" style={{ fontSize: 11, marginBottom: 16 }}>
           MENÚ
         </div>
-        <Link href="/" className={isActive("biblioteca") ? "active" : ""} onClick={close}>
+        <Link href="/" className={isActive("inicio") ? "active" : ""} onClick={close}>
+          Inicio
+        </Link>
+        <Link href="/juego" className={isActive("biblioteca") ? "active" : ""} onClick={close}>
           Biblioteca
         </Link>
         <Link href="/salon" className={isActive("salon") ? "active" : ""} onClick={close}>
