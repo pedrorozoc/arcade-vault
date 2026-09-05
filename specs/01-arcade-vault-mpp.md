@@ -1,6 +1,6 @@
 # 01 — Arcade Vault MPP (pantallas del template)
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** —
 **Fecha:** 2026-09-04
 
@@ -108,21 +108,21 @@ Todas las lecturas de `localStorage` deben ocurrir solo en cliente (dentro de `u
 
 ## Criterios de aceptación
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] `/` muestra el hero, un buscador que filtra por texto, chips de categoría funcionales, y el grid de las 8 tarjetas de juego.
-- [ ] Cada tarjeta navega a `/juego/[id]` con el `id` correcto.
-- [ ] `/juego/[id]` muestra la info del juego y su leaderboard; un `id` inexistente devuelve 404.
-- [ ] El botón "JUGAR AHORA" en Detalle navega a `/juego/[id]/jugar`.
-- [ ] El Reproductor incrementa la puntuación automáticamente, permite pausar/reanudar, y "FIN" abre el modal con la puntuación final.
-- [ ] Guardar la puntuación en el modal la persiste en `localStorage` (`av_scores`) y muestra el toast de confirmación.
-- [ ] Tras guardar una puntuación, esta aparece reflejada (según su ranking) en el leaderboard de `/juego/[id]` y en la fila "TU MEJOR MARCA" de `/salon` para ese juego.
-- [ ] `/auth` permite iniciar sesión con cualquier usuario/contraseña, crear cuenta, o entrar como invitado; tras autenticar redirige a `/`.
-- [ ] Con sesión iniciada, el Nav muestra el nombre de usuario y permite cerrar sesión; sin sesión muestra "Iniciar Sesión".
-- [ ] La sesión (`av_user`) persiste tras recargar la página.
-- [ ] `/salon` muestra el podio (2º/1º/3º) y la tabla completa para cada uno de los 8 juegos, cambiando de juego con los tabs.
-- [ ] El menú móvil (hamburguesa) funciona en viewport angosto en las 5 pantallas.
-- [ ] Las 5 pantallas están en español y usan el theme visual existente sin romper la paleta de `app/globals.css`.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] `/` muestra el hero, un buscador que filtra por texto, chips de categoría funcionales, y el grid de las 8 tarjetas de juego.
+- [x] Cada tarjeta navega a `/juego/[id]` con el `id` correcto.
+- [x] `/juego/[id]` muestra la info del juego y su leaderboard; un `id` inexistente devuelve 404.
+- [x] El botón "JUGAR AHORA" en Detalle navega a `/juego/[id]/jugar`.
+- [x] El Reproductor incrementa la puntuación automáticamente, permite pausar/reanudar, y "FIN" abre el modal con la puntuación final.
+- [x] Guardar la puntuación en el modal la persiste en `localStorage` (`av_scores`) y muestra el toast de confirmación.
+- [x] Tras guardar una puntuación, esta aparece reflejada (según su ranking) en el leaderboard de `/juego/[id]` y en la fila "TU MEJOR MARCA" de `/salon` para ese juego.
+- [x] `/auth` permite iniciar sesión con cualquier usuario/contraseña, crear cuenta, o entrar como invitado; tras autenticar redirige a `/`.
+- [x] Con sesión iniciada, el Nav muestra el nombre de usuario y permite cerrar sesión; sin sesión muestra "Iniciar Sesión".
+- [x] La sesión (`av_user`) persiste tras recargar la página.
+- [x] `/salon` muestra el podio (2º/1º/3º) y la tabla completa para cada uno de los 8 juegos, cambiando de juego con los tabs.
+- [x] El menú móvil (hamburguesa) funciona en viewport angosto en las 5 pantallas. (verificado el toggle open/close vía JS; ver nota de verificación)
+- [x] Las 5 pantallas están en español y usan el theme visual existente sin romper la paleta de `app/globals.css`.
 
 ## Decisiones tomadas y descartadas
 

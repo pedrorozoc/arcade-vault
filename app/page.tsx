@@ -4,6 +4,15 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { CATS, GAMES, type Game } from "@/lib/data";
 
+// Rango Unicode de marcas diacríticas combinantes (tildes, diéresis, etc.)
+// que quedan sueltas tras normalize("NFD"); se construye con fromCodePoint
+// para no depender de cómo el editor represente la secuencia de escape.
+const DIACRITICS = new RegExp(`[${String.fromCodePoint(0x300)}-${String.fromCodePoint(0x36f)}]`, "g");
+
+function normalize(text: string): string {
+  return text.toLowerCase().normalize("NFD").replace(DIACRITICS, "");
+}
+
 function GameCard({ game }: { game: Game }) {
   const colorClass = game.color === "magenta" ? "magenta" : game.color === "yellow" ? "yellow" : "";
 
@@ -34,7 +43,7 @@ export default function Home() {
 
   const filtered = useMemo(() => {
     return GAMES.filter(
-      (g) => (cat === "TODOS" || g.cat === cat) && g.title.toLowerCase().includes(q.toLowerCase())
+      (g) => (cat === "TODOS" || g.cat === cat) && normalize(g.title).includes(normalize(q))
     );
   }, [q, cat]);
 
