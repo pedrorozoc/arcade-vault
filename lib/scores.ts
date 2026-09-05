@@ -9,6 +9,14 @@ export interface AvUser {
   name: string;
 }
 
+type Listener = () => void;
+const userListeners = new Set<Listener>();
+
+export function subscribeUser(listener: Listener): () => void {
+  userListeners.add(listener);
+  return () => userListeners.delete(listener);
+}
+
 export interface ScoreEntry {
   game: string; // Game.id
   score: number;
@@ -34,6 +42,7 @@ export function setUser(user: AvUser | null): void {
   } else {
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
   }
+  userListeners.forEach((listener) => listener());
 }
 
 export function getScores(): ScoreEntry[] {
