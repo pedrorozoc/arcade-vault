@@ -80,17 +80,36 @@ export function saveScore(entry: Omit<ScoreEntry, "at">): void {
   notify();
 }
 
+// Igual que getUser(), se cachea por el contenido crudo de localStorage
+// (esta vez de av_user + av_scores) para devolver una referencia estable
+// mientras nada haya cambiado, requisito de useSyncExternalStore.
+const bestScoreCache = new Map<
+  string,
+  { userRaw: string | null; scoresRaw: string | null; entry: ScoreEntry | null }
+>();
+
 export function getBestScoreFor(gameId: string): ScoreEntry | null {
+  if (typeof window === "undefined") return null;
+  const userRaw = window.localStorage.getItem(USER_KEY);
+  const scoresRaw = window.localStorage.getItem(SCORES_KEY);
+  const cached = bestScoreCache.get(gameId);
+  if (cached && cached.userRaw === userRaw && cached.scoresRaw === scoresRaw) {
+    return cached.entry;
+  }
+
   const user = getUser();
-  if (!user) return null;
-  const mine = getScores().filter(
-    (s) => s.game === gameId && s.name === user.name
-  );
-  if (mine.length === 0) return null;
-  return mine.reduce((best, s) => (s.score > best.score ? s : best));
+  let entry: ScoreEntry | null = null;
+  if (user) {
+    const mine = getScores().filter((s) => s.game === gameId && s.name === user.name);
+    if (mine.length > 0) {
+      entry = mine.reduce((best, s) => (s.score > best.score ? s : best));
+    }
+  }
+  bestScoreCache.set(gameId, { userRaw, scoresRaw, entry });
+  return entry;
 }
 
-function formatDate(at: number): string {
+export function formatScoreDate(at: number): string {
   const d = new Date(at);
   const day = String(d.getDate()).padStart(2, "0");
   const mon = String(d.getMonth() + 1).padStart(2, "0");
@@ -110,7 +129,7 @@ export function getMergedLeaderboard(
     rank: 0,
     name: best.name,
     score: best.score,
-    date: formatDate(best.at),
+    date: formatScoreDate(best.at),
   };
 
   return [...seeded, mine]
