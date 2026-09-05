@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useSyncExternalStore } from "react";
 import { getUser, setUser as persistUser, subscribe } from "@/lib/scores";
 
-type NavSection = "inicio" | "biblioteca" | "salon" | "auth";
+type NavSection = "inicio" | "biblioteca" | "salon" | "acerca-de" | "auth";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -17,6 +17,7 @@ export default function Nav() {
     if (section === "inicio") return pathname === "/";
     if (section === "biblioteca") return pathname === "/juego" || pathname.startsWith("/juego/");
     if (section === "salon") return pathname === "/salon";
+    if (section === "acerca-de") return pathname === "/acerca-de";
     return pathname === "/auth";
   };
 
@@ -46,6 +47,9 @@ export default function Nav() {
           </Link>
           <Link href="/salon" className={isActive("salon") ? "active" : ""}>
             Salón de la Fama
+          </Link>
+          <Link href="/acerca-de" className={isActive("acerca-de") ? "active" : ""}>
+            Acerca de
           </Link>
         </div>
         <div className="spacer" />
@@ -80,6 +84,9 @@ export default function Nav() {
         </Link>
         <Link href="/salon" className={isActive("salon") ? "active" : ""} onClick={close}>
           Salón de la Fama
+        </Link>
+        <Link href="/acerca-de" className={isActive("acerca-de") ? "active" : ""} onClick={close}>
+          Acerca de
         </Link>
         <Link href="/auth" className={isActive("auth") ? "active" : ""} onClick={close}>
           {user ? "Cuenta" : "Iniciar Sesión"}
