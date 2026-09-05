@@ -1,6 +1,6 @@
 # 03 — Página «Acerca de» y formulario de contacto con Resend
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** SPEC 01, SPEC 02
 **Fecha:** 2026-09-05
 
@@ -86,25 +86,25 @@ Variables de entorno (no versionadas salvo `.env.template`):
 
 ## Criterios de aceptación
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] `/acerca-de` muestra la sección «Acerca de» (kicker «▸ ACERCA DE», título «ACERCA DE ARCADE VAULT», texto de misión, y la `highlight-row` con las 3 tarjetas con icono).
-- [ ] `/acerca-de` muestra el banner divisor con los píxeles animados.
-- [ ] `/acerca-de` muestra la sección «Contacto» con el texto intro, las 3 pistas (`contact-tips`) y el formulario (Nombre, Correo electrónico, Mensaje, botón «▶ ENVIAR MENSAJE»).
-- [ ] El efecto reveal-on-scroll anima `.about-divider` y `.about-contact` al entrar en el viewport.
-- [ ] Enviar el formulario con un campo vacío dispara la animación `shake` y **no** hace ninguna petición a `/api/contact`.
-- [ ] Enviar el formulario con nombre, email y mensaje válidos hace `POST /api/contact`, y al recibir `200` muestra la pantalla `terminal-success` con el nombre en mayúsculas.
-- [ ] Un envío válido entrega un correo a la dirección de `CONTACT_TO_EMAIL` con asunto «Arcade Vault — Mensaje de {nombre}» y `Reply-To` igual al email introducido.
-- [ ] El botón «ENVIAR OTRO MENSAJE» de la pantalla de éxito vuelve a mostrar el formulario vacío.
-- [ ] Si `/api/contact` responde con error o el `fetch` falla, se muestra el bloque de error con línea `[ERROR]` y botón «REINTENTAR», y los campos escritos se conservan.
-- [ ] `POST /api/contact` con el campo honeypot `company` no vacío responde `200 { ok: true }` y **no** envía correo.
-- [ ] `POST /api/contact` sin `name`, `email` o `msg` (o con email mal formado) responde `400 { ok: false, error }`.
-- [ ] `POST /api/contact` sin `RESEND_API_KEY` o sin `CONTACT_TO_EMAIL` configurada responde `500 { ok: false, error }` y no lanza una excepción sin capturar.
-- [ ] El Nav muestra, en orden: «Inicio», «Biblioteca», «Salón de la Fama», «Acerca de», en desktop y en el menú móvil.
-- [ ] «Acerca de» se resalta como activo solo en `/acerca-de`.
-- [ ] `.env.local` no aparece en `git status`; `.env.template` sí está versionado con las dos claves.
-- [ ] No hay warnings de hidratación en la consola al cargar `/acerca-de`.
-- [ ] La página está en español y usa el theme visual existente sin romper la paleta de `app/globals.css`.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] `/acerca-de` muestra la sección «Acerca de» (kicker «▸ ACERCA DE», título «ACERCA DE ARCADE VAULT», texto de misión, y la `highlight-row` con las 3 tarjetas con icono).
+- [x] `/acerca-de` muestra el banner divisor con los píxeles animados.
+- [x] `/acerca-de` muestra la sección «Contacto» con el texto intro, las 3 pistas (`contact-tips`) y el formulario (Nombre, Correo electrónico, Mensaje, botón «▶ ENVIAR MENSAJE»).
+- [x] El efecto reveal-on-scroll anima `.about-divider` y `.about-contact` al entrar en el viewport.
+- [x] Enviar el formulario con un campo vacío dispara la animación `shake` y **no** hace ninguna petición a `/api/contact`.
+- [x] Enviar el formulario con nombre, email y mensaje válidos hace `POST /api/contact`, y al recibir `200` muestra la pantalla `terminal-success` con el nombre en mayúsculas.
+- [x] Un envío válido entrega un correo a la dirección de `CONTACT_TO_EMAIL` con asunto «Arcade Vault — Mensaje de {nombre}» y `Reply-To` igual al email introducido.
+- [x] El botón «ENVIAR OTRO MENSAJE» de la pantalla de éxito vuelve a mostrar el formulario vacío.
+- [x] Si `/api/contact` responde con error o el `fetch` falla, se muestra el bloque de error con línea `[ERROR]` y botón «REINTENTAR», y los campos escritos se conservan.
+- [x] `POST /api/contact` con el campo honeypot `company` no vacío responde `200 { ok: true }` y **no** envía correo.
+- [x] `POST /api/contact` sin `name`, `email` o `msg` (o con email mal formado) responde `400 { ok: false, error }`.
+- [x] `POST /api/contact` sin `RESEND_API_KEY` o sin `CONTACT_TO_EMAIL` configurada responde `500 { ok: false, error }` y no lanza una excepción sin capturar.
+- [x] El Nav muestra, en orden: «Inicio», «Biblioteca», «Salón de la Fama», «Acerca de», en desktop y en el menú móvil.
+- [x] «Acerca de» se resalta como activo solo en `/acerca-de`.
+- [x] `.env.local` no aparece en `git status`; `.env.template` sí está versionado con las dos claves.
+- [x] No hay warnings de hidratación en la consola al cargar `/acerca-de`.
+- [x] La página está en español y usa el theme visual existente sin romper la paleta de `app/globals.css`.
 
 ## Decisiones tomadas y descartadas
 
