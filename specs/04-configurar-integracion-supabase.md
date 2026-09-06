@@ -1,6 +1,6 @@
 # 04 — Configurar la integración de Supabase
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** —
 **Fecha:** 2026-09-06
 
@@ -68,7 +68,7 @@ export async function updateSession(
   request: NextRequest
 ): Promise<NextResponse>;
 ```
-
+1
 ## Plan de implementación
 
 1. `npm install @supabase/supabase-js @supabase/ssr`. Prueba: aparecen en `dependencies` de `package.json` y `npm run build` sigue compilando.
