@@ -1140,6 +1140,12 @@ a {
   );
   pointer-events: none;
 }
+.crt-screen canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
 .crt-content {
   position: absolute;
   inset: 0;
