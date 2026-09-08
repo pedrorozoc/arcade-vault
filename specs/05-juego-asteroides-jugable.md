@@ -1,6 +1,6 @@
 # 05 — Juego Asteroides jugable
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** SPEC 01
 **Fecha:** 2026-09-06
 
@@ -108,25 +108,25 @@ Convenciones del motor (heredadas de `game.js`): lienzo fijo `800 × 600`; orige
 
 ## Criterios de aceptación
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] `GAMES` incluye una entrada `id: "asteroides"` con `cat: "SHOOTER"`, y `/juego` muestra 9 tarjetas.
-- [ ] `/juego/asteroides` (detalle) muestra la info del juego, la portada `.cover-asteroides` y su leaderboard; un `id` inexistente sigue dando 404.
-- [ ] `/juego/asteroides/jugar` renderiza un `<canvas>` real dentro del marco CRT, sin warnings de hidratación en consola.
-- [ ] La nave rota con `←`/`→`, propulsa con `↑` y dispara con `Espacio`; disparar y rotar no hace scroll de la página.
-- [ ] Disparar a un asteroide grande lo parte en dos medianos; un mediano en dos pequeños; un pequeño desaparece sin fragmentos.
-- [ ] La puntuación sube 20 / 50 / 100 según el tamaño destruido, y el HUD React «Puntuación» coincide con el `SCORE` dibujado en el canvas.
-- [ ] Chocar con un asteroide resta una vida; el HUD React «Vidas» baja en 1; con 0 vidas aparece el overlay `GAME OVER`.
-- [ ] Al limpiar todos los asteroides se pasa al siguiente nivel y el HUD React «Nivel» se incrementa.
-- [ ] El power-up `3x` aparece, se recoge al tocarlo y habilita disparo triple temporal (indicador `3x` en el HUD del canvas).
-- [ ] Al llegar a `GAME OVER` aparece el panel de guardado bajo el canvas con la puntuación final; `GUARDAR PUNTUACIÓN` persiste en `localStorage` (`av_scores`) con `game: "asteroides"` y muestra el aviso de guardado.
-- [ ] Tras guardar, la puntuación aparece según su ranking en el leaderboard de `/juego/asteroides` y en la fila «TU MEJOR MARCA» de `/salon` para `ASTEROIDES`.
-- [ ] `JUGAR DE NUEVO` reinicia la partida (motor y HUD React a cero); `VOLVER AL VAULT` navega a `/`.
-- [ ] `PAUSA` congela la simulación y `REANUDAR` la retoma; `FIN` fuerza el fin de la partida y abre el panel de guardado.
-- [ ] Al salir de `/juego/asteroides/jugar` no quedan `requestAnimationFrame` ni listeners de teclado activos (sin errores en consola; el uso de CPU vuelve a reposo).
-- [ ] `/juego/rocas/jugar` y el resto de rutas `/juego/[id]/jugar` siguen mostrando la simulación `GamePlayer` sin cambios.
-- [ ] El canvas se escala manteniendo la proporción 4:3 en viewport estrecho y permanece dentro del marco CRT.
-- [ ] Todo el texto visible nuevo está en español y usa el theme de `app/globals.css` sin romper la paleta.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] `GAMES` incluye una entrada `id: "asteroides"` con `cat: "SHOOTER"`, y `/juego` muestra 9 tarjetas.
+- [x] `/juego/asteroides` (detalle) muestra la info del juego, la portada `.cover-asteroides` y su leaderboard; un `id` inexistente sigue dando 404.
+- [x] `/juego/asteroides/jugar` renderiza un `<canvas>` real dentro del marco CRT, sin warnings de hidratación en consola.
+- [x] La nave rota con `←`/`→`, propulsa con `↑` y dispara con `Espacio`; disparar y rotar no hace scroll de la página.
+- [x] Disparar a un asteroide grande lo parte en dos medianos; un mediano en dos pequeños; un pequeño desaparece sin fragmentos.
+- [x] La puntuación sube 20 / 50 / 100 según el tamaño destruido, y el HUD React «Puntuación» coincide con el `SCORE` dibujado en el canvas.
+- [x] Chocar con un asteroide resta una vida; el HUD React «Vidas» baja en 1; con 0 vidas aparece el overlay `GAME OVER`.
+- [x] Al limpiar todos los asteroides se pasa al siguiente nivel y el HUD React «Nivel» se incrementa.
+- [x] El power-up `3x` aparece, se recoge al tocarlo y habilita disparo triple temporal (indicador `3x` en el HUD del canvas).
+- [x] Al llegar a `GAME OVER` aparece el panel de guardado bajo el canvas con la puntuación final; `GUARDAR PUNTUACIÓN` persiste en `localStorage` (`av_scores`) con `game: "asteroides"` y muestra el aviso de guardado.
+- [x] Tras guardar, la puntuación aparece según su ranking en el leaderboard de `/juego/asteroides` y en la fila «TU MEJOR MARCA» de `/salon` para `ASTEROIDES`.
+- [x] `JUGAR DE NUEVO` reinicia la partida (motor y HUD React a cero); `VOLVER AL VAULT` navega a `/`.
+- [x] `PAUSA` congela la simulación y `REANUDAR` la retoma; `FIN` fuerza el fin de la partida y abre el panel de guardado.
+- [x] Al salir de `/juego/asteroides/jugar` no quedan `requestAnimationFrame` ni listeners de teclado activos (sin errores en consola; el uso de CPU vuelve a reposo).
+- [x] `/juego/rocas/jugar` y el resto de rutas `/juego/[id]/jugar` siguen mostrando la simulación `GamePlayer` sin cambios.
+- [x] El canvas se escala manteniendo la proporción 4:3 en viewport estrecho y permanece dentro del marco CRT.
+- [x] Todo el texto visible nuevo está en español y usa el theme de `app/globals.css` sin romper la paleta.
 
 ## Decisiones tomadas y descartadas
 
