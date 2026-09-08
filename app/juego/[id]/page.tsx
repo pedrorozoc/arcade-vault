@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GAMES } from "@/lib/data";
+import { getGame } from "@/lib/games-catalog.server";
 import GameLeaderboard from "@/components/GameLeaderboard";
 
 export default async function GameDetail({ params }: PageProps<"/juego/[id]">) {
   const { id } = await params;
-  const game = GAMES.find((g) => g.id === id);
+  const game = await getGame(id);
   if (!game) notFound();
 
   const seed = id.length * 17 + 3;
@@ -34,7 +34,10 @@ export default async function GameDetail({ params }: PageProps<"/juego/[id]">) {
               <div className="l">Mejor global</div>
               <div
                 className="v"
-                style={{ color: "var(--magenta)", textShadow: "0 0 6px rgba(255,0,110,0.5)" }}
+                style={{
+                  color: "var(--magenta)",
+                  textShadow: "0 0 6px rgba(255,0,110,0.5)",
+                }}
               >
                 {game.best.toLocaleString("es-ES")}
               </div>
@@ -43,7 +46,10 @@ export default async function GameDetail({ params }: PageProps<"/juego/[id]">) {
               <div className="l">Dificultad</div>
               <div
                 className="v"
-                style={{ color: "var(--yellow)", textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
+                style={{
+                  color: "var(--yellow)",
+                  textShadow: "0 0 6px rgba(245,255,0,0.5)",
+                }}
               >
                 ★ ★ ★ ☆ ☆
               </div>

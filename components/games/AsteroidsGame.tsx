@@ -30,6 +30,8 @@ export default function AsteroidsGame({ game }: { game: Game }) {
   const [over, setOver] = useState(false);
   const [paused, setPaused] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const [nameOverride, setNameOverride] = useState<string | null>(null);
 
   const name = nameOverride ?? loggedInName ?? "INVITADO";
@@ -49,6 +51,7 @@ export default function AsteroidsGame({ game }: { game: Game }) {
       onRestart: () => {
         setOver(false);
         setSaved(false);
+        setSaveError(false);
         setScore(0);
         setLives(3);
         setLevel(1);
@@ -74,9 +77,17 @@ export default function AsteroidsGame({ game }: { game: Game }) {
   const endGame = () => handleRef.current?.endNow();
   const playAgain = () => handleRef.current?.restart();
 
-  const handleSave = () => {
-    saveScore({ game: "asteroides", score, name });
-    setSaved(true);
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveError(false);
+    try {
+      await saveScore({ game: "asteroides", score, name });
+      setSaved(true);
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -157,18 +168,37 @@ export default function AsteroidsGame({ game }: { game: Game }) {
           <div className="final-label">PUNTUACIÓN FINAL</div>
           <div className="final">{score.toLocaleString("es-ES")}</div>
           {!saved ? (
-            <div className="input-row">
-              <input
-                value={name}
-                onChange={(e) =>
-                  setNameOverride(e.target.value.toUpperCase().slice(0, 10))
-                }
-                placeholder="TUS INICIALES"
-              />
-              <button className="btn yellow" onClick={handleSave}>
-                GUARDAR PUNTUACIÓN
-              </button>
-            </div>
+            <>
+              <div className="input-row">
+                <input
+                  value={name}
+                  onChange={(e) =>
+                    setNameOverride(e.target.value.toUpperCase().slice(0, 10))
+                  }
+                  placeholder="TUS INICIALES"
+                />
+                <button
+                  className="btn yellow"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? "GUARDANDO…" : "GUARDAR PUNTUACIÓN"}
+                </button>
+              </div>
+              {saveError && (
+                <div
+                  className="mono"
+                  style={{
+                    fontSize: 11,
+                    color: "var(--magenta)",
+                    marginTop: 10,
+                    letterSpacing: "0.16em",
+                  }}
+                >
+                  ▸ NO SE PUDO GUARDAR. INTÉNTALO DE NUEVO.
+                </div>
+              )}
+            </>
           ) : (
             <div className="toast-saved">▸ PUNTUACIÓN GUARDADA_</div>
           )}
