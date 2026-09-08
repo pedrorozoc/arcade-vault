@@ -1,6 +1,6 @@
 # 06 — Leaderboard y scores en Supabase
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** SPEC 01, SPEC 04
 **Fecha:** 2026-09-08
 
