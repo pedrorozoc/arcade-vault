@@ -110,9 +110,11 @@ export async function saveScore(entry: {
 }
 
 // Lee el leaderboard de un juego. Devuelve como mucho `count` filas
-// ordenadas por score desc con `rank` recalculado. Si la consulta falla,
-// devuelve `seededScores(seed, count)` puro. Si hay menos de `count` filas
-// reales, rellena el hueco con `seededScores` y reordena.
+// ordenadas por score desc con `rank` recalculado. Si la consulta falla o el
+// juego no tiene ninguna puntuación real, devuelve `seededScores(seed, count)`
+// como relleno de demo. En cuanto hay al menos una fila real, se muestran
+// solo las reales — nunca se mezclan con las seeded (evita que scores bajos
+// reales queden ocultos por las falsas).
 export async function getLeaderboard(
   gameId: string,
   seed: number,
@@ -125,21 +127,14 @@ export async function getLeaderboard(
     .order("score", { ascending: false })
     .limit(count);
 
-  if (error || !data) return seededScores(seed, count);
+  if (error || !data || data.length === 0) return seededScores(seed, count);
 
-  const real: LeaderboardEntry[] = data.map((row, i) => ({
+  return data.map((row, i) => ({
     rank: i + 1,
     name: row.player_name,
     score: row.score,
     date: formatScoreDate(row.created_at),
   }));
-
-  if (real.length >= count) return real;
-
-  return [...real, ...seededScores(seed, count)]
-    .sort((a, b) => b.score - a.score)
-    .slice(0, count)
-    .map((row, i) => ({ ...row, rank: i + 1 }));
 }
 
 // Mejor marca de un jugador en un juego. Si `playerName` es null (sin mock
