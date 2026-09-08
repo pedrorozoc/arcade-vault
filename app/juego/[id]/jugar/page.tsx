@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getGame } from "@/lib/games-catalog";
+import { getGame } from "@/lib/games-catalog.server";
 import GamePlayer from "@/components/GamePlayer";
 import AsteroidsGame from "@/components/games/AsteroidsGame";
 

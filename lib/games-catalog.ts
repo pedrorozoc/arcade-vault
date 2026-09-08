@@ -1,13 +1,19 @@
-// ===== lib/games-catalog.ts — catálogo leído de Supabase con fallback a GAMES =====
+// ===== lib/games-catalog.ts — catálogo (parte de cliente) con fallback a GAMES =====
 // La tabla `games` guarda title/short/long/cat/sort_order (SPEC 06); cover,
 // color, best y plays se resuelven desde el array estático GAMES de
 // `lib/data.ts` por `id` (detalle de presentación / valores estáticos, no
 // migrados). Toda función degrada a GAMES si Supabase no responde.
+//
+// Las funciones de servidor (getCatalog, getGame) viven en
+// `./games-catalog.server` porque importan `./supabase/server` → `next/headers`,
+// que no puede entrar en el bundle de los Client Components que consumen
+// `fetchCatalogFromBrowser` (Home y /juego).
 
 import { GAMES, type Game, type GameCategory } from "./data";
+import { createClient } from "./supabase/client";
 import type { Database } from "./supabase/database.types";
 
-type GamesRow = Database["public"]["Tables"]["games"]["Row"];
+export type GamesRow = Database["public"]["Tables"]["games"]["Row"];
 
 // Valores neutros para un `id` que exista en `games` pero no en GAMES.
 const NEUTRAL = {
@@ -33,43 +39,10 @@ export function mapRow(row: GamesRow): Game {
   };
 }
 
-// Catálogo completo (Server Components). Fallback a GAMES ante error o 0 filas.
-export async function getCatalog(): Promise<Game[]> {
-  try {
-    const { createClient } = await import("./supabase/server");
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("games")
-      .select("*")
-      .order("sort_order");
-    if (error || !data || data.length === 0) return GAMES;
-    return data.map(mapRow);
-  } catch {
-    return GAMES;
-  }
-}
-
-// Un juego por id (Server Components). Fallback a GAMES.find ante error.
-export async function getGame(id: string): Promise<Game | null> {
-  try {
-    const { createClient } = await import("./supabase/server");
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("games")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
-    if (error) return GAMES.find((g) => g.id === id) ?? null;
-    return data ? mapRow(data) : null;
-  } catch {
-    return GAMES.find((g) => g.id === id) ?? null;
-  }
-}
-
-// Catálogo completo desde el navegador (Client Components). Mismo fallback.
+// Catálogo completo desde el navegador (Client Components). Fallback a GAMES
+// ante error, `!data` o 0 filas.
 export async function fetchCatalogFromBrowser(): Promise<Game[]> {
   try {
-    const { createClient } = await import("./supabase/client");
     const { data, error } = await createClient()
       .from("games")
       .select("*")

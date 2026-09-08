@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getGame } from "@/lib/games-catalog";
+import { getGame } from "@/lib/games-catalog.server";
 import GameLeaderboard from "@/components/GameLeaderboard";
 
 export default async function GameDetail({ params }: PageProps<"/juego/[id]">) {

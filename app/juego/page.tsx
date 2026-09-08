@@ -1,20 +1,29 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CATS, GAMES, type Game } from "@/lib/data";
+import { fetchCatalogFromBrowser } from "@/lib/games-catalog";
 
 // Rango Unicode de marcas diacríticas combinantes (tildes, diéresis, etc.)
 // que quedan sueltas tras normalize("NFD"); se construye con fromCodePoint
 // para no depender de cómo el editor represente la secuencia de escape.
-const DIACRITICS = new RegExp(`[${String.fromCodePoint(0x300)}-${String.fromCodePoint(0x36f)}]`, "g");
+const DIACRITICS = new RegExp(
+  `[${String.fromCodePoint(0x300)}-${String.fromCodePoint(0x36f)}]`,
+  "g"
+);
 
 function normalize(text: string): string {
   return text.toLowerCase().normalize("NFD").replace(DIACRITICS, "");
 }
 
 function GameCard({ game }: { game: Game }) {
-  const colorClass = game.color === "magenta" ? "magenta" : game.color === "yellow" ? "yellow" : "";
+  const colorClass =
+    game.color === "magenta"
+      ? "magenta"
+      : game.color === "yellow"
+        ? "yellow"
+        : "";
 
   return (
     <Link href={`/juego/${game.id}`} className="card">
@@ -41,11 +50,28 @@ export default function Biblioteca() {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<(typeof CATS)[number]>("TODOS");
 
+  // Inicial GAMES (determinista, sin mismatch de hidratación); se reemplaza
+  // por el catálogo de la tabla `games`, o se queda en GAMES si Supabase no
+  // está disponible.
+  const [catalog, setCatalog] = useState<Game[]>(GAMES);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchCatalogFromBrowser().then((next) => {
+      if (!cancelled) setCatalog(next);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const filtered = useMemo(() => {
-    return GAMES.filter(
-      (g) => (cat === "TODOS" || g.cat === cat) && normalize(g.title).includes(normalize(q))
+    return catalog.filter(
+      (g) =>
+        (cat === "TODOS" || g.cat === cat) &&
+        normalize(g.title).includes(normalize(q))
     );
-  }, [q, cat]);
+  }, [q, cat, catalog]);
 
   return (
     <div className="fade-in">
@@ -83,8 +109,22 @@ export default function Biblioteca() {
           <GameCard key={g.id} game={g} />
         ))}
         {filtered.length === 0 && (
-          <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: 80, color: "var(--ink-faint)" }}>
-            <div className="pixel" style={{ fontSize: 14, color: "var(--magenta)", marginBottom: 12 }}>
+          <div
+            style={{
+              gridColumn: "1 / -1",
+              textAlign: "center",
+              padding: 80,
+              color: "var(--ink-faint)",
+            }}
+          >
+            <div
+              className="pixel"
+              style={{
+                fontSize: 14,
+                color: "var(--magenta)",
+                marginBottom: 12,
+              }}
+            >
               NO HAY RESULTADOS
             </div>
             <div>Intenta otra búsqueda o categoría.</div>
