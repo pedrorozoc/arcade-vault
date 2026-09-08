@@ -4,15 +4,17 @@
 // (asíncrono en Next.js 16). El `setAll` va en try/catch: cuando se invoca
 // desde un Server Component la escritura de cookies lanza, y ese caso lo
 // cubre el refresco de sesión en `proxy.ts` (patrón documentado por Supabase).
-// Sin genérico `Database` todavía: se retipará cuando exista esquema (SPEC 04).
+// Tipado con el genérico `Database` generado en `./database.types` (SPEC 06).
 
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
+import type { Database } from "./database.types";
+
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
