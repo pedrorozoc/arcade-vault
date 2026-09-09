@@ -114,6 +114,18 @@ export const GAMES: Game[] = [
     best: 41200,
     plays: "0",
   },
+  {
+    id: "tetris",
+    title: "TETRIS",
+    short:
+      "Rota y encaja tetraminós para completar líneas antes de que la pila alcance el techo.",
+    long: "El puzzle de bloques de siempre, con un giro del Vault: siete piezas clásicas más una tuerca hueca de 3×3 caen sobre un pozo de 10×20. Gíralas con wall kicks, acelera la bajada con soft drop o suéltalas de golpe con hard drop, y limpia hasta cuatro líneas de una vez para multiplicar la puntuación por el nivel. Cada 10 líneas sube el nivel y la caída se acelera sin tregua.",
+    cat: "PUZZLE",
+    cover: "cover-tetris",
+    color: "cyan",
+    best: 152800,
+    plays: "0",
+  },
 ];
 
 export const CATS: ("TODOS" | GameCategory)[] = [
