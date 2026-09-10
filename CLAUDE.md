@@ -59,6 +59,8 @@ Diferencias ya encontradas en este repo:
 | `POST /api/contact`        | `app/api/contact/route.ts`         | Route Handler | Envía el mensaje por Resend (con honeypot `company`)             |
 | `GET /api/health/supabase` | `app/api/health/supabase/route.ts` | Route Handler | Healthcheck de la integración de Supabase (200 / 503)            |
 
+para ver los juegos implementados se puede [aquí](references/implemented-games.md)
+
 `app/layout.tsx` es el root layout: carga tres fuentes de Google (`Press_Start_2P`, `JetBrains_Mono`, `Courier_Prime`) como variables CSS y monta `<Nav />`.
 
 - **Alias de imports**: `@/*` mapea a la raíz del repo (`tsconfig.json`).
