@@ -24,8 +24,10 @@ No hay test runner configurado todavía.
 Ver el bloque al inicio de `AGENTS.md`: esta instalación de Next.js (16.3.4) puede tener APIs y convenciones distintas a las que conoces por entrenamiento. Antes de escribir código que toque rutas, layouts, data fetching o config, revisa la guía correspondiente en `node_modules/next/dist/docs/` (carpetas `01-app`, `02-pages`, `03-architecture`, `04-community`). Presta atención a avisos de deprecación.
 
 ## Skills
+
 Usa siempre /frontend-design para diseñar interfaces de usuario
 
+Para añadir un juego jugable con leaderboard a partir de un prototipo de `references/started-games/`, usa `/spec-juego <nombre>` (skill local en `.claude/skills/spec-juego/`): redacta un spec en `specs/NN-<slug>.md` fusionando el patrón de SPEC 05 (motor + wrapper + catálogo + cover) y SPEC 06 (fila seed en la tabla `games`). No implementa código; la implementación sigue siendo `/spec-impl`.
 
 ## Architecture
 
@@ -43,3 +45,5 @@ npx skills@latest add Klerith/fernando-skills
 ```
 
 Si esas skills no están instaladas en este entorno, instálalas antes de asumir que `/spec` o `/spec-impl` existen.
+
+Para juegos nuevos hay un atajo local: `/spec-juego <prototipo>` genera el spec (estado `Borrador`) siguiendo el patrón de SPEC 05 + SPEC 06; luego se aprueba a mano y se implementa con `/spec-impl`.

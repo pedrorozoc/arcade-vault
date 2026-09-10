@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getGame } from "@/lib/games-catalog.server";
 import GamePlayer from "@/components/GamePlayer";
 import AsteroidsGame from "@/components/games/AsteroidsGame";
+import TetrisGame from "@/components/games/TetrisGame";
 
 export default async function JugarPage({
   params,
@@ -11,5 +12,6 @@ export default async function JugarPage({
   if (!game) notFound();
 
   if (id === "asteroides") return <AsteroidsGame game={game} />;
+  if (id === "tetris") return <TetrisGame game={game} />;
   return <GamePlayer game={game} />;
 }
