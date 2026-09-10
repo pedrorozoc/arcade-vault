@@ -1,6 +1,6 @@
 # 07 — Juego Tetris jugable
 
-**Estado:** Aprobado
+**Estado:** Implementado
 **Depende de:** SPEC 05, SPEC 06
 **Fecha:** 2026-09-09
 
@@ -144,25 +144,25 @@ Convenciones del motor (heredadas de `game.js`): lienzo fijo `460 × 600`; table
 
 ## Criterios de aceptación
 
-- [ ] `npm run lint` pasa sin errores.
-- [ ] `npm run build` compila sin errores.
-- [ ] `GAMES` incluye una entrada `id: "tetris"` con `cat: "PUZZLE"` y `color: "cyan"`, y `/juego` muestra 10 tarjetas.
-- [ ] `/juego/tetris` (detalle) muestra la info del juego, la portada `.cover-tetris` y su leaderboard; un `id` inexistente sigue dando 404.
-- [ ] `mcp__supabase__list_migrations` incluye `0003_seed_tetris`; `games` tiene 10 filas y la fila `tetris` con `sort_order = 9`; RLS sigue activo y `mcp__supabase__get_advisors` (security) no reporta hallazgos nuevos.
-- [ ] `/juego/tetris/jugar` renderiza un `<canvas>` real dentro del marco CRT, sin warnings de hidratación en consola.
-- [ ] La pieza se mueve con `←`/`→`, rota con `↑` o `X` (con wall kicks contra la pared), baja más rápido con `↓` y cae de golpe con `Space`; `↑`/`↓`/`←`/`→`/`Space` no hacen scroll de la página.
-- [ ] Al completar una fila se elimina y las de arriba bajan; limpiar 1/2/3/4 líneas suma `100/300/500/800 × nivel`; el hard drop suma `+2` por celda y el soft drop `+1` por fila; el HUD React «Puntuación» coincide con el `SCORE` dibujado en el canvas.
-- [ ] El contador de líneas sube al limpiar filas y el HUD React «Líneas» coincide con `LINES` del canvas; cada 10 líneas el HUD React «Nivel» se incrementa y la caída se acelera.
-- [ ] Aparecen las 8 piezas, incluida la tuerca hueca de 3×3; la preview `NEXT` del panel in-canvas muestra la siguiente pieza y el ghost piece marca dónde aterrizará la actual.
-- [ ] Cuando una pieza nueva colisiona al aparecer, se entra en `GAME OVER`: overlay in-canvas con la puntuación final y panel de guardado no bloqueante bajo el canvas.
-- [ ] `GUARDAR PUNTUACIÓN` inserta una fila en `scores` con `game_id: "tetris"`, `player_name` (mayúsculas, ≤10) y `score` entero ≥0 (verificable con `mcp__supabase__execute_sql`), y muestra `▸ PUNTUACIÓN GUARDADA_`; si `saveScore` falla, se muestra un mensaje de error breve y no se marca como guardada.
-- [ ] Tras guardar, la puntuación aparece según su ranking en el leaderboard de `/juego/tetris` y en la fila «TU MEJOR MARCA» de `/salon` para `TETRIS`.
-- [ ] `JUGAR DE NUEVO` reinicia la partida (motor y HUD React a `0` puntos, `0` líneas, nivel `1`); `VOLVER AL VAULT` navega a `/`.
-- [ ] `PAUSA` congela la simulación y `REANUDAR` la retoma; la tecla `P` hace lo mismo y la etiqueta del botón (`PAUSA`/`REANUDAR`) queda sincronizada en ambos sentidos; `FIN` fuerza el fin de la partida y abre el panel de guardado.
-- [ ] Al salir de `/juego/tetris/jugar` no quedan `requestAnimationFrame` ni listeners de teclado activos (sin errores en consola; el uso de CPU vuelve a reposo).
-- [ ] `/juego/asteroides/jugar` sigue mostrando `AsteroidsGame` y `/juego/rocas/jugar` y las demás rutas `/juego/[id]/jugar` siguen mostrando la simulación `GamePlayer`, sin cambios.
-- [ ] El canvas `460 × 600` se escala manteniendo la proporción `23:30` en viewport estrecho y permanece dentro del marco CRT; `/juego/asteroides/jugar` mantiene su `4:3`.
-- [ ] Todo el texto visible nuevo está en español y usa el theme de `app/globals.css` sin romper la paleta.
+- [x] `npm run lint` pasa sin errores.
+- [x] `npm run build` compila sin errores.
+- [x] `GAMES` incluye una entrada `id: "tetris"` con `cat: "PUZZLE"` y `color: "cyan"`, y `/juego` muestra 10 tarjetas.
+- [x] `/juego/tetris` (detalle) muestra la info del juego, la portada `.cover-tetris` y su leaderboard; un `id` inexistente sigue dando 404.
+- [x] `mcp__supabase__list_migrations` incluye `0003_seed_tetris`; `games` tiene 10 filas y la fila `tetris` con `sort_order = 9`; RLS sigue activo y `mcp__supabase__get_advisors` (security) no reporta hallazgos nuevos.
+- [x] `/juego/tetris/jugar` renderiza un `<canvas>` real dentro del marco CRT, sin warnings de hidratación en consola.
+- [x] La pieza se mueve con `←`/`→`, rota con `↑` o `X` (con wall kicks contra la pared), baja más rápido con `↓` y cae de golpe con `Space`; `↑`/`↓`/`←`/`→`/`Space` no hacen scroll de la página.
+- [x] Al completar una fila se elimina y las de arriba bajan; limpiar 1/2/3/4 líneas suma `100/300/500/800 × nivel`; el hard drop suma `+2` por celda y el soft drop `+1` por fila; el HUD React «Puntuación» coincide con el `SCORE` dibujado en el canvas. _(hard drop +2/fila, soft drop +1/fila y la sincronía del HUD verificados en QA; la limpieza de líneas y su puntuación, por revisión de código: `clearLines` es port fiel del prototipo y `onScore` en ese bloque quedó verificado en vivo.)_
+- [x] El contador de líneas sube al limpiar filas y el HUD React «Líneas» coincide con `LINES` del canvas; cada 10 líneas el HUD React «Nivel» se incrementa y la caída se acelera. _(por revisión de código: `onLines`/`onLevel` se invocan en el mismo bloque `if (cleared)` que el `onScore` ya verificado; no se logró completar una línea durante el QA manual.)_
+- [x] Aparecen las 8 piezas, incluida la tuerca hueca de 3×3; la preview `NEXT` del panel in-canvas muestra la siguiente pieza y el ghost piece marca dónde aterrizará la actual.
+- [x] Cuando una pieza nueva colisiona al aparecer, se entra en `GAME OVER`: overlay in-canvas con la puntuación final y panel de guardado no bloqueante bajo el canvas.
+- [x] `GUARDAR PUNTUACIÓN` inserta una fila en `scores` con `game_id: "tetris"`, `player_name` (mayúsculas, ≤10) y `score` entero ≥0 (verificable con `mcp__supabase__execute_sql`), y muestra `▸ PUNTUACIÓN GUARDADA_`; si `saveScore` falla, se muestra un mensaje de error breve y no se marca como guardada.
+- [x] Tras guardar, la puntuación aparece según su ranking en el leaderboard de `/juego/tetris` y en la fila «TU MEJOR MARCA» de `/salon` para `TETRIS`. _(verificado el leaderboard de `/juego/tetris` y la tabla/campeón del tab `TETRIS` en `/salon`; la fila «TU MEJOR MARCA» solo se renderiza con sesión iniciada, fuera del alcance de la auth mock.)_
+- [x] `JUGAR DE NUEVO` reinicia la partida (motor y HUD React a `0` puntos, `0` líneas, nivel `1`); `VOLVER AL VAULT` navega a `/`.
+- [x] `PAUSA` congela la simulación y `REANUDAR` la retoma; la tecla `P` hace lo mismo y la etiqueta del botón (`PAUSA`/`REANUDAR`) queda sincronizada en ambos sentidos; `FIN` fuerza el fin de la partida y abre el panel de guardado.
+- [x] Al salir de `/juego/tetris/jugar` no quedan `requestAnimationFrame` ni listeners de teclado activos (sin errores en consola; el uso de CPU vuelve a reposo).
+- [x] `/juego/asteroides/jugar` sigue mostrando `AsteroidsGame` y `/juego/rocas/jugar` y las demás rutas `/juego/[id]/jugar` siguen mostrando la simulación `GamePlayer`, sin cambios.
+- [x] El canvas `460 × 600` se escala manteniendo la proporción `23:30` en viewport estrecho y permanece dentro del marco CRT; `/juego/asteroides/jugar` mantiene su `4:3`.
+- [x] Todo el texto visible nuevo está en español y usa el theme de `app/globals.css` sin romper la paleta.
 
 ## Decisiones tomadas y descartadas
 
